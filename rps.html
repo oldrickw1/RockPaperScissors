@@ -2,14 +2,40 @@
 <html lang="en">
 <head>
     <title>RPS</title>
-    <script src="rps.js"></script>
+    <script src="rps.js"defer></script>
+    <link rel="stylesheet" href="rps.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <h1>Rock Paper Scissors!</h1>
-    
+    <div class='container'>
+        <h1>Rock Paper Scissors!</h1>
+        <div class='container'>
+            <div class="buttonholder">
+                <button id="rock">Rock</button>
+                <button id="paper">Paper</button>
+                <button id="scissors">Scissors</button>
+            </div>
+            <div class="display">
+                <div class="round"></div>
+                <div class="scoreboard">
+                    <div class="score-player">
+                        <div class="player-name">Player</div>
+                        <div class="player-score">0</div>
+                    </div>
+
+                    <div class="versus"><strong>-</strong></div>
+
+                    <div class="score-computer">
+                        <div class="computer-name">Computer</div>
+                        <div class="computer-score">0</div>
+                    </div>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

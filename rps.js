@@ -1,94 +1,65 @@
-game();
+const buttons = document.querySelectorAll('button');
+const playerScore = document.querySelector('.player-score');
+const computerScore = document.querySelector('.computer-score');
+const results = document.querySelector('.results');
 
-function game() {
-    const results = []
-    let rounds 
-    do {
-        rounds = parseInt(prompt("How many rounds would you like to play?"));
-    }
-    while (isNaN(rounds))
-    for (let i = 1; i <= rounds; i++)
-    {
-        results.push(playRound(i))
-    }
-    let numberOfWins = 0;
-    let numberOfLosses = 0;
-    for (i in results) {
-        if (results[i] == "You lost this round") {
-            numberOfLosses++;
+let userSelection;
+let round = 0;
+const choices = ['Rock','Paper','Scissors'];
+let scores =[{name:"user",score: 0},{name:"computer",score: 0}];
+
+buttons.forEach( button => {
+    button.addEventListener('click', (e) => {
+        if (round > 4) {
+            results.innerHTML = getWinner();
+            round = 0;
+            scores.forEach(score => {
+                score.score = 0;
+            })
+            return;
         }
-        else if (results[i] == "You won this round") {
-            numberOfWins++;
-        }
+        userSelection = e.target.id;
+        userSelection = userSelection[0].toUpperCase() +userSelection.slice(1);
+        computerSelection =  choices[Math.floor(Math.random()*choices.length)];
+        updateWinner(userSelection,computerSelection);
+        playerScore.innerHTML = scores[0].score;
+        computerScore.innerHTML = scores[1].score;
+        round++;
+    })
+});
+
+function getWinner() {
+    if (scores[0].score > scores[1].score){
+        return scores[0].name;
     }
-    if (numberOfWins == numberOfLosses) {
-        console.log("Final outcome is a Tie")
+    else if (scores[0].score < scores[1].score){
+        return scores[1].name;
     }
-    else if (numberOfWins >= numberOfLosses) {
-        console.log("You won the game!")
-    }
-    else {
-        console.log("You lost the game :(")
-    }
+    return "Tie"
 }
 
+function updateWinner(userSelection, computerSelection) {
+    results.innerHTML =`You: ${userSelection} | Comp: ${computerSelection}`;
+    switch(userSelection + computerSelection) {
+        case 'ScissorsPaper':
+        case 'RockScissors':
+        case 'PaperRock':
+            results.innerHTML += "<br>You won this round!"
+            scores[0].score++;
+            break;
+        case 'PaperScissors':
+        case 'ScissorsRock':
+        case 'RockPaper':
+            results.innerHTML += "<br>You lost this round!"
+            scores[1].score++;
+            break;
+        case 'ScissorsScissors':
+        case 'PaperPaper':
+        case 'RockRock':
+            results.innerHTML += "<br>Tie";
+            break;
+        default:
+            console.log("Default");
 
-function playRound(round) {
-    let playerSelection = getPlayerSelection();
-    let computerSelection = getComputerSelection();
-    return getResult(playerSelection, computerSelection, round);
-}
-
-// Determine outcome
-function getResult(playerSelection,computerSelection, round) {
-    if (playerSelection == computerSelection) { 
-        console.log("Round " + round + " is a Tie")
-        return "Tie";
-    }
-    else if (playerSelection == "Rock" && computerSelection == "Paper"
-    || playerSelection == "Paper" && computerSelection == "Scissors"
-    || playerSelection == "Scissors" && computerSelection == "Rock") {
-        console.log("You lost round " + round)
-        return "You lost this round";
-    }
-
-    else {
-        console.log("You won round " + round)
-        return "You won this round";
-    }
-}
-
-// Get computerselection with random integer
-function getComputerSelection() {
-    let random = Math.floor(Math.random()*10)%3;
-    let computerSelection;
-    if (random == 0) {
-        return "Rock"
-    }
-    else if (random == 1) {
-        return "Paper"
-    }
-    else {
-        return "Scissors"
     }
 }
-
-// Get user input and formatting it
-function getPlayerSelection() {
-    let playerSelection;
-    do {
-        playerSelection = prompt("Rock, Paper or Scissors?\n");
-    }
-    while (playerSelection == "")
-
-    playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase()
-    if (playerSelection == "Rock" || playerSelection == "Paper" || playerSelection == "Scissors") {
-        return playerSelection;
-    }
-    else {
-        console.log("Must enter valid string")
-        getPlayerSelection();
-    }
-}
-
-
